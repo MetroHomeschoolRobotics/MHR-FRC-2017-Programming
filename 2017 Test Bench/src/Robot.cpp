@@ -7,8 +7,8 @@ class Robot: public IterativeRobot
 	Servo *leftServo = new Servo(1);
 	Servo *rightServo = new Servo(2);
 
-	ADXRS450_Gyro *gyro;
-	ADXL362 *accel;
+	//ADXRS450_Gyro *gyro;
+	//ADXL362 *accel;
 
 public:
 	Robot() {
@@ -17,8 +17,8 @@ public:
 		leftServo = new Servo(1);
 		rightServo = new Servo(2);
 
-		gyro = new ADXRS450_Gyro();
-		accel = new ADXL362();
+		//gyro = new ADXRS450_Gyro();
+		//accel = new ADXL362();
 
 
 		//CameraServer::GetInstance()->SetQuality(50);
@@ -46,12 +46,12 @@ private:
 	{
 		CameraServer::GetInstance()->StartAutomaticCapture("cam0");
 
-		if (driveStick->GetRawButton(7))
+		if (driveStick->GetRawButton(3)) // button 3 is the X button on an xpad
 		{
 			leftServo->SetAngle(75);
 		}
 
-		if (driveStick->GetRawButton(8))
+		if (driveStick->GetRawButton(2)) // button 2 is the B button on an xpad
 		{
 			rightServo->SetAngle(75);
 		}
@@ -59,12 +59,12 @@ private:
 
 	void TestInit()
 	{
-
+		// we dont use this section
 	}
 
 	void TestPeriodic()
 	{
-
+		// this is test mode on the ds we our confident in our release versions XD we dont use this
 	}
 
 };
