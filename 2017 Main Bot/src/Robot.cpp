@@ -10,8 +10,6 @@ class Robot: public IterativeRobot
 	CANTalon *rDrive1;
 	CANTalon *rDrive2;
 	DoubleSolenoid *Shifter;
-	Servo *leftServo = new Servo(1);
-	Servo *rightServo = new Servo(2);
 
 	ADXRS450_Gyro *gyro;
 	ADXL362 *accel;
@@ -26,8 +24,6 @@ public:
 		rDrive1 = new CANTalon(3);
 		rDrive2 = new CANTalon(4);
 		Shifter = new DoubleSolenoid (0,1);
-		leftServo = new Servo(1);
-		rightServo = new Servo(2);
 
 		gyro = new ADXRS450_Gyro();
 		accel = new ADXL362();
@@ -75,8 +71,7 @@ private:
 
 	void TeleopInit() // holds code for pre teleop enable
 	{
-		leftServo->Set(.5);
-		rightServo->Set(.5);
+
 	}
 
 	void TeleopPeriodic() // code for the robot to move is placed here (runs when
