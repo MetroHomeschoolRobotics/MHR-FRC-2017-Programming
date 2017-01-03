@@ -10,10 +10,7 @@ class Robot: public IterativeRobot
 	CANTalon *rDrive1;
 	CANTalon *rDrive2;
 	DoubleSolenoid *Shifter;
-
-	ADXRS450_Gyro *gyro;
-	ADXL362 *accel;
-
+	
 public:
 	Robot() {
 		Wait(1);
@@ -24,10 +21,6 @@ public:
 		rDrive1 = new CANTalon(3);
 		rDrive2 = new CANTalon(4);
 		Shifter = new DoubleSolenoid (0,1);
-
-		gyro = new ADXRS450_Gyro();
-		accel = new ADXL362();
-
 
 		//CameraServer::GetInstance()->SetQuality(50);
 		//table = NetworkTable::GetTable("GRIP/myContoursReport");
@@ -78,10 +71,10 @@ private:
 	// the robot is enabled in teleop mode)
 	{
 		//CameraServer::GetInstance()->StartAutomaticCapture("cam0");
-				SmartDashboard::PutNumber("DB/Slider 0", accel->GetX());
-				SmartDashboard::PutNumber("DB/Slider 1", accel->GetY());
+				//SmartDashboard::PutNumber("DB/Slider 0", accel->GetX());
+				//SmartDashboard::PutNumber("DB/Slider 1", accel->GetY());
 		//		SmartDashboard::PutNumber("DB/Slider 2", accel->GetZ());
-				SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
+				//SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
 				//frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 
 				//distance = (sonicIn->GetRaw() * inches);
