@@ -139,10 +139,10 @@ private:
 					mLeftY = -mLeftY;
 				}
 
-				frontDrive->Set(leftX);
-				rearDrive->Set(-leftX);
-				leftDrive->Set(leftY);
-				rightDrive->Set(-leftY);
+				frontDrive->Set(leftY+leftX);
+				rearDrive->Set(-leftY+leftx);
+				leftDrive->Set(leftX);
+				rightDrive->Set(-leftX);
 
 /*				if(driveStick->GetRawButton(3)) {
 					Shifter->Set(DoubleSolenoid::Value::kReverse);
