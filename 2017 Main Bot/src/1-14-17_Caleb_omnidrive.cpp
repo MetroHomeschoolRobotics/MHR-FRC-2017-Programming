@@ -140,7 +140,7 @@ private:
 				}
 
 				frontDrive->Set(leftY+leftX);
-				rearDrive->Set(-leftY+leftx);
+				rearDrive->Set(-leftY+leftX);
 				leftDrive->Set(leftX);
 				rightDrive->Set(-leftX);
 
