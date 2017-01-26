@@ -1,4 +1,5 @@
 #include "WPILib.h"
+#include "Spark.h"
 
 class Robot: public IterativeRobot
 {
@@ -6,6 +7,9 @@ class Robot: public IterativeRobot
 	Joystick *driveStick;
 	Servo *leftServo = new Servo(1);
 	Servo *rightServo = new Servo(2);
+	Spark *spark1;
+
+
 
 	//ADXRS450_Gyro *gyro;
 	//ADXL362 *accel;
@@ -16,6 +20,7 @@ public:
 		driveStick = new Joystick (0);
 		leftServo = new Servo(1);
 		rightServo = new Servo(2);
+		spark1 = new Spark(0);
 
 		//gyro = new ADXRS450_Gyro();
 		//accel = new ADXL362();
@@ -44,7 +49,7 @@ private:
 	void TeleopPeriodic() // code for the robot to move is placed here (runs when
 	// the robot is enabled in teleop mode)
 	{
-		CameraServer::GetInstance()->StartAutomaticCapture("cam0");
+		//CameraServer::GetInstance()->StartAutomaticCapture("cam0");
 
 		if (driveStick->GetRawButton(3)) // button 3 is the X button on an xpad
 		{
@@ -55,6 +60,16 @@ private:
 		{
 			rightServo->SetAngle(75);
 		}
+
+		if (driveStick->GetRawButton(4))
+		{
+			spark1->Set(1);
+		}
+		else if (driveStick->GetRawButton(1))
+		{
+			spark1->Set(-1);
+		}
+
 	}// end TeleopPeriodic
 
 	void TestInit()
