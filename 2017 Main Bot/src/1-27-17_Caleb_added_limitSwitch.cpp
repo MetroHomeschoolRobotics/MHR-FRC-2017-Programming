@@ -204,7 +204,7 @@ private:
 			 \*******************************/
 		}
 
-			if (limitSwitch->Get()) {
+			while (limitSwitch->Get()) {
 				if (counter > goodCount) {//...and if the counter has more integers than the goodCount...
 					counter++;		//...add one count to the previous count
 					shooter = shooter - 1;	//...make the shooter motor slower
