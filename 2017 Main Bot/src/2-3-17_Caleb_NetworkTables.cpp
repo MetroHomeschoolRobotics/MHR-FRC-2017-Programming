@@ -1,5 +1,6 @@
 #include "WPILib.h"
 #include "CANTalon.h"
+#include "networkTables/NetworkTable.h"
 
 class Robot: public IterativeRobot {
 
@@ -103,7 +104,7 @@ private:
 
 	void RobotInit() override
 	{
-		printf("Good Morning! ");
+		printf("Hello World!");
 		roboRealm = NetworkTable::GetTable("SmartDashboard");
 
 		/*frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
@@ -130,8 +131,6 @@ private:
 	void AutonomousInit() // code for auto mode !!!this will run and stop only when disabled!!!
 	{
 
-		SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
-
 		if (action == 2) {
 			COGX = roboRealm->GetNumber("COG_X", -1.0);
 			COGY = roboRealm->GetNumber("COG_Y", -1.0);
@@ -141,7 +140,7 @@ private:
 	}
 
 	void AutonomousPeriodic() {
-		//SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
+		SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
 
 		if (action == 2) {
 			turnDistance = (centerPos / 10) - gyro->GetAngle();
@@ -149,26 +148,58 @@ private:
 
 			if (COGX != -1) {
 				if (turnDistance > 1.5) {
-					frontDrive1->Set(0);
-					frontDrive2->Set(0);
-					rearDrive1->Set(0);
-					rearDrive2->Set(0);
-				} else if (turnDistance < -1.5) {
-					frontDrive1->Set(0);
-					frontDrive2->Set(0);
-					rearDrive1->Set(0);
-					rearDrive2->Set(0);
-				} else {
+					frontDrive1->Set(0.5);
+					frontDrive2->Set(0.5);
+					rearDrive1->Set(0.5);
+					rearDrive2->Set(0.5);
+				}
+				else if (turnDistance < -1.5) {
+					frontDrive1->Set(0.5);
+					frontDrive2->Set(0.5);
+					rearDrive1->Set(0.5);
+					rearDrive2->Set(0.5);
+				}
+				else if (turnDistance > -1.5 && turnDistance <1.5) {
+					shooter->Set(5);
+					Wait(10);
+				}
+				else {
 					COGX = roboRealm->GetNumber("COG_X", -1.0);
 					COGY = roboRealm->GetNumber("COG_Y", -1.0);
 					centerPos = imageWidth / 2 - COGX;
 					turnDistance = (centerPos / 10) - gyro->GetAngle();
 				}
-			} else {
+			}
+			else {
 				printf("Aaaaaaand it's broke. ");
 			}
-			Wait(0.005);
 
+
+
+
+			// MODIFY THIS CODE FOR THE SHOOTER!!!
+			// AND ADD CODE FOR THE INFRARED SENSOR!!!
+
+
+
+
+			/*if(shooterPos < 90) {
+			 winch->Set(-1);
+			 } else *//*if(fabs(turnDistance) < 1.5) {
+			 winch->Set(0);
+			 shooter1->Set(-0.75);
+			 shooter2->Set(0.75);
+			 Wait(0.5);
+			 william->Set(DoubleSolenoid::Value::kReverse);
+			 } else {
+			 winch->Set(-0.05);
+			 }
+
+			 if(switch1->Get() == false) {
+			 shooterPos = 0;
+			 } else {
+			 shooterPos = shooterPos - winch->Get();
+			 }*/
 		}
 	}
 
@@ -278,7 +309,7 @@ private:
 				shooter->Set(0);
 			}
 
-			 /*******************************************************************\
+			/*******************************************************************\
 			 | pressed: true                                                     |
 			 | counter: limit switch pressed                                     |
 			 | goodCount: the ideal revolutions the motor turns before resetting |
@@ -296,7 +327,7 @@ private:
 					}
 					Wait(1); //do this for 1 second...
 				}
-				count = 0; //...and then
+				count = 0; //...and then reset the count to 0
 			}
 		}
 		/*
@@ -311,4 +342,4 @@ private:
 	}
 };
 
-START_ROBOT_CLASS(Robot);
+START_ROBOT_CLASS(Robot)
