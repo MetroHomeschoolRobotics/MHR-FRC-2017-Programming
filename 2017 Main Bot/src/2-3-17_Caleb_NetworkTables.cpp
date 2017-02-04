@@ -28,8 +28,8 @@ public:
 		manipulatorStick = new Joystick(1);
 		frontDrive1 = new CANTalon(1);
 		frontDrive2 = new CANTalon(2);
-		rearDrive1 = new CANTalon(3);
-		rearDrive2 = new CANTalon(4);
+		rearDrive1 = new CANTalon(4);
+		rearDrive2 = new CANTalon(3);
 //		leftDrive = new CANTalon(5);
 //		rightDrive = new CANTalon(6);
 		shooter = new CANTalon(7);
