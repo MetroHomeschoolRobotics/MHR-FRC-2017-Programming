@@ -68,16 +68,6 @@ class Robot: public IterativeRobot
 		void TeleopPeriodic() // code for the robot to move is placed here (runs when
 		// the robot is enabled in teleop mode)
 		{
-			//CameraServer::GetInstance()->StartAutomaticCapture("cam0");
-			//SmartDashboard::PutNumber("DB/Slider 0", accel->GetX());
-			//SmartDashboard::PutNumber("DB/Slider 1", accel->GetY());
-			//		SmartDashboard::PutNumber("DB/Slider 2", accel->GetZ());
-			//SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
-			//frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
-
-			//distance = (sonicIn->GetRaw() * inches);
-			//sonicOut->Pulse(10);
-
 			//code for controller values
 
 			leftX = driveStick->GetRawAxis(0);
@@ -253,3 +243,4 @@ class Robot: public IterativeRobot
 };
 
 START_ROBOT_CLASS(Robot);
+
