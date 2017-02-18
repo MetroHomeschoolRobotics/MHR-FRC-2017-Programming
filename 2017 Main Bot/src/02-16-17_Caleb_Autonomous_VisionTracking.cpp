@@ -125,7 +125,7 @@ private:
 		NetworkTable::Initialize();
 		std::shared_ptr<NetworkTable> myTable = NetworkTable::GetTable(
 				"SmartDashboard");
-		CameraServer::GetInstance()->StartAutomaticCapture();
+		//CameraServer::GetInstance()->StartAutomaticCapture(); Initialized below 
 		roboRealm = NetworkTable::GetTable("cam1");
 
 		cam1 = CameraServer::GetInstance()->StartAutomaticCapture("cam1",
