@@ -15,8 +15,8 @@ class Robot: public IterativeRobot
 		Talon *rearDrive2;
 //	CANTalon *leftDrive;
 //	CANTalon *rightDrive;
-		CANTalon *shooter;
-		CANTalon *climber;
+		Talon *shooter;
+		Talon *climber;
 		DigitalInput *limitSwitch;
 		DigitalInput *shooterButton;
 		DigitalInput *climberButton;
@@ -37,8 +37,8 @@ class Robot: public IterativeRobot
 			rearDrive2 = new Talon(3);
 //		leftDrive = new CANTalon(5);
 //		rightDrive = new CANTalon(6);
-			shooter = new CANTalon(7);
-			climber = new CANTalon(8);
+			shooter = new Talon(7);
+			climber = new Talon(8);
 
 			limitSwitch = new DigitalInput(1);
 
@@ -88,15 +88,14 @@ class Robot: public IterativeRobot
 		double count = 0;
 
 		/*CHANGE THE FOLLOWING INTEGERS: "45" = theta = angle of the initial velocity from the horizontal plane (degrees)
-										 trajectoryCal = the muzzle velocity of the ball
-										 shootDistance = distance from shooter to the goal
-										 "97.19685036" = the height of the goal in inches
-										 "385.82698" = acceleration due to gravity*/
+		 trajectoryCal = the muzzle velocity of the ball
+		 shootDistance = distance from shooter to the goal
+		 "97.19685036" = the height of the goal in inches
+		 "385.82698" = acceleration due to gravity*/
 
 		int trajectoryCal = ((shootDistance * tan(45))
 				- ((385.82698) * (shootDistance * shootDistance)
 						/ (2 * 97.19685036 * cos(45) * cos(45))));
-
 
 		//limit switch variables
 		bool on = true; //count the button presses
@@ -108,7 +107,11 @@ class Robot: public IterativeRobot
 		double IMAGE_HEIGHT = 240;
 		double COGX = 0;
 		double COGY = 0;
-		double centerPos = 0;
+		double LeftOuter = roboRealm->GetNumber("LeftOuter");
+		double LeftInner = roboRealm->GetNumber("LeftInner");
+		double RightOuter = roboRealm->GetNumber("RightOuter");
+		double RightInner = roboRealm->GetNumber("RightInner");
+		double centerPos = (LeftInner + RightOuter) / 2;
 		double shooterPos = 0;
 		double shootCount = 0;
 		double turnDistance = 0;
@@ -165,85 +168,89 @@ class Robot: public IterativeRobot
 		}
 
 		void AutonomousInit() // code for auto mode !!!this will run and stop only when disabled!!!
-		{
-			if (action == 2)
-			{
-				COGX = roboRealm->GetNumber("COG_X", -1.0);
-				COGY = roboRealm->GetNumber("COG_Y", -1.0);
-				centerPos = IMAGE_WIDTH / 2 - COGX;
-				turnDistance = centerPos / 10;
-			} // code for auto goes here !!!It will run when auto is enabled on the ds!!!
+		{/*
+		 if (action == 2)
+		 {
+		 COGX = roboRealm->GetNumber("COG_X", -1.0);
+		 COGY = roboRealm->GetNumber("COG_Y", -1.0);
+		 centerPos = IMAGE_WIDTH / 2 - COGX;
+		 turnDistance = centerPos / 10;
+		 } // code for auto goes here !!!It will run when auto is enabled on the ds!!!
+		 */
 		}
 
 		void AutonomousPeriodic()
-		{
-//		SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
+		{/*
+		 //		SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
 
-			if (action == 2)
-			{
-//			turnDistance = (centerPos / 10) - gyro->GetAngle();
-//			SmartDashboard::PutNumber("DB/Slider 2", shooterPos);
+		 if (action == 2)
+		 {
+		 //			turnDistance = (centerPos / 10) - gyro->GetAngle();
+		 //			SmartDashboard::PutNumber("DB/Slider 2", shooterPos);
 
-				if (COGX != -1)
-				{
-					if (turnDistance > 1.5)
-					{
-						SmartDashboard::PutNumber("DB/Slider 2", leftX);
-						frontDrive1->Set(0.5);
-						frontDrive2->Set(0.5);
-						rearDrive1->Set(0.5);
-						rearDrive2->Set(0.5);
-					}
-					else if (turnDistance < -1.5)
-					{
-						frontDrive1->Set(0.5);
-						frontDrive2->Set(0.5);
-						rearDrive1->Set(0.5);
-						rearDrive2->Set(0.5);
-					}
-					else if (turnDistance > -1.5 && turnDistance < 1.5)
-					{
-						shooter->Set(fabs(sqrt(trajectoryCal)));
-						Wait(10);
-					}
-					else
-					{
-						COGX = roboRealm->GetNumber("COG_X", -1.0);
-						COGY = roboRealm->GetNumber("COG_Y", -1.0);
-						centerPos = IMAGE_WIDTH / 2 - COGX;
-						//turnDistance = (centerPos / 10) - gyro->GetAngle();
-					}
-				}
-				else
-				{
-					printf("Aaaaaaand it's broke. ");
-				}
+		 if (COGX != -1)
+		 {
+		 if (turnDistance > 1.5)
+		 {
+		 SmartDashboard::PutNumber("DB/Slider 2", leftX);
+		 frontDrive1->Set(0.5);
+		 frontDrive2->Set(0.5);
+		 rearDrive1->Set(0.5);
+		 rearDrive2->Set(0.5);
+		 }
+		 else if (turnDistance < -1.5)
+		 {
+		 frontDrive1->Set(0.5);
+		 frontDrive2->Set(0.5);
+		 rearDrive1->Set(0.5);
+		 rearDrive2->Set(0.5);
+		 }
+		 else if (turnDistance > -1.5 && turnDistance < 1.5)
+		 {
+		 shooter->Set(fabs(sqrt(trajectoryCal)));
+		 Wait(10);
+		 }
+		 else
+		 {
+		 COGX = roboRealm->GetNumber("COG_X", -1.0);
+		 COGY = roboRealm->GetNumber("COG_Y", -1.0);
+		 centerPos = IMAGE_WIDTH / 2 - COGX;
+		 //turnDistance = (centerPos / 10) - gyro->GetAngle();
+		 }
+		 }
+		 else
+		 {
+		 printf("Aaaaaaand it's broke. ");
+		 }
 
-				// MODIFY THIS CODE FOR THE SHOOTER!!!
-				// AND ADD CODE FOR THE INFRARED SENSOR!!!
+		 // MODIFY THIS CODE FOR THE SHOOTER!!!
+		 // AND ADD CODE FOR THE INFRARED SENSOR!!!
 
-				/*if(shooterPos < 90) {
-				 winch->Set(-1);
-				 } else *//*if(fabs(turnDistance) < 1.5) {
-				 winch->Set(0);
-				 shooter1->Set(-0.75);
-				 shooter2->Set(0.75);
-				 Wait(0.5);
-				 william->Set(DoubleSolenoid::Value::kReverse);
-				 } else {
-				 winch->Set(-0.05);
-				 }
-				 if(switch1->Get() == false) {
-				 shooterPos = 0;
-				 } else {
-				 shooterPos = shooterPos - winch->Get();
-				 }*/
-			}
+		 if(shooterPos < 90) {
+		 winch->Set(-1);
+		 } else *//*if(fabs(turnDistance) < 1.5) {
+		 winch->Set(0);
+		 shooter1->Set(-0.75);
+		 shooter2->Set(0.75);
+		 Wait(0.5);
+		 william->Set(DoubleSolenoid::Value::kReverse);
+		 } else {
+		 winch->Set(-0.05);
+		 }
+		 if(switch1->Get() == false) {
+		 shooterPos = 0;
+		 } else {
+		 shooterPos = shooterPos - winch->Get();
+		 }
+		 }*/
 		}
 
 		void TeleopInit() // holds code for pre teleop enable
-		{
-
+		{/*
+		 centerPos = IMAGE_WIDTH / 2 - COGX;
+		 turnDistance = centerPos / 10;
+		 } // code for auto goes here !!!It will run when auto is enabled on the ds!!!
+		 */
 		}
 
 		void TeleopPeriodic() // code for the robot to move is placed here (runs when
@@ -350,29 +357,27 @@ class Robot: public IterativeRobot
 			{
 				if (shooterButton->Get())
 				{
-					if (COGX != -1)
+					if (imageCenter > centerPos)
 					{
-						if (turnDistance > 1)
-						{
-							SmartDashboard::PutString("Vision Says", "Turn!!!");
-							frontDrive1->Set(0.5);
-							frontDrive2->Set(0.5);
-							rearDrive1->Set(0.5);
-							rearDrive2->Set(0.5);
-						}
-						else if (turnDistance < -1)
-						{
-							SmartDashboard::PutString("Vision Says", "Turn!!!");
-							frontDrive1->Set(-0.5);
-							frontDrive2->Set(-0.5);
-							rearDrive1->Set(-0.5);
-							rearDrive2->Set(-0.5);
-						}
-						else if (turnDistance > -1.5 && turnDistance < 1.5)
-						{
-							SmartDashboard::PutString("Vision Says", "Good!!!");
-							shooter->Set(fabs(sqrt(trajectoryCal)));
-						}
+						SmartDashboard::PutString("Vision Says", "Turn!!!");
+						frontDrive1->Set(0.5);
+						frontDrive2->Set(0.5);
+						rearDrive1->Set(0.5);
+						rearDrive2->Set(0.5);
+					}
+					if (imageCenter < centerPos)
+					{
+						SmartDashboard::PutString("Vision Says", "Turn!!!");
+						frontDrive1->Set(-0.5);
+						frontDrive2->Set(-0.5);
+						rearDrive1->Set(-0.5);
+						rearDrive2->Set(-0.5);
+					}
+					if (imageCenter > centerPos + 1
+							&& imageCenter < centerPos - 1)
+					{
+						SmartDashboard::PutString("Vision Says", "Good!!!");
+						shooter->Set(fabs(sqrt(trajectoryCal)));
 					}
 				}
 			}
