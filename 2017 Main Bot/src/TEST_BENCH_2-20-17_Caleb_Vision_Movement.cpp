@@ -102,16 +102,20 @@ class Robot: public IterativeRobot
 		int limitSwitchState = 0; // the state of the limit switch
 
 		//vision tracking
+		std::shared_ptr<NetworkTable> roboRealm;
+		cs::UsbCamera cam1;
+		cs::CvSink highGoalVid;
 		int action = 1;
 		double IMAGE_WIDTH = 320;
 		double IMAGE_HEIGHT = 240;
 		double COGX = 0;
 		double COGY = 0;
-		double LeftOuter = roboRealm->GetNumber("LeftOuter");
-		double LeftInner = roboRealm->GetNumber("LeftInner");
-		double RightOuter = roboRealm->GetNumber("RightOuter");
-		double RightInner = roboRealm->GetNumber("RightInner");
-		double centerPos = (LeftInner + RightOuter) / 2;
+		double LOuter = 0;
+		double LInner = 0;
+		double ROuter = 0;
+		double RInner = 0;
+		double centerPos = (LOuter + ROuter) / 2;
+		double centerPos2 = (LInner + RInner) / 2;
 		double shooterPos = 0;
 		double shootCount = 0;
 		double turnDistance = 0;
@@ -122,9 +126,6 @@ class Robot: public IterativeRobot
 		int camWidth = 320;
 		int camHeight = 240;
 		int imageCenter = (camWidth / 2);
-		std::shared_ptr<NetworkTable> roboRealm;
-		cs::UsbCamera cam1;
-		cs::CvSink highGoalVid;
 
 		//disabled periodic
 		int type = 0;
@@ -182,12 +183,10 @@ class Robot: public IterativeRobot
 		void AutonomousPeriodic()
 		{/*
 		 //		SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
-
 		 if (action == 2)
 		 {
 		 //			turnDistance = (centerPos / 10) - gyro->GetAngle();
 		 //			SmartDashboard::PutNumber("DB/Slider 2", shooterPos);
-
 		 if (COGX != -1)
 		 {
 		 if (turnDistance > 1.5)
@@ -222,10 +221,8 @@ class Robot: public IterativeRobot
 		 {
 		 printf("Aaaaaaand it's broke. ");
 		 }
-
 		 // MODIFY THIS CODE FOR THE SHOOTER!!!
 		 // AND ADD CODE FOR THE INFRARED SENSOR!!!
-
 		 if(shooterPos < 90) {
 		 winch->Set(-1);
 		 } else *//*if(fabs(turnDistance) < 1.5) {
@@ -251,6 +248,10 @@ class Robot: public IterativeRobot
 		 turnDistance = centerPos / 10;
 		 } // code for auto goes here !!!It will run when auto is enabled on the ds!!!
 		 */
+			LOuter = roboRealm->GetNumber("LeftOuter", -.50);
+			LInner = roboRealm->GetNumber("LeftInner", -.50);
+			ROuter = roboRealm->GetNumber("RightOuter", -.50);
+			RInner = roboRealm->GetNumber("RightInner", -.50);
 		}
 
 		void TeleopPeriodic() // code for the robot to move is placed here (runs when
@@ -355,17 +356,25 @@ class Robot: public IterativeRobot
 
 			if (driveStick->GetRawButton(6))
 			{
-				if (shooterButton->Get())
+				if (imageCenter > centerPos)
 				{
-					if (imageCenter > centerPos)
-					{
-						SmartDashboard::PutString("Vision Says", "Turn!!!");
-						frontDrive1->Set(0.5);
-						frontDrive2->Set(0.5);
-						rearDrive1->Set(0.5);
-						rearDrive2->Set(0.5);
-					}
-					if (imageCenter < centerPos)
+					SmartDashboard::PutString("Vision Says", "Turn!!!");
+					frontDrive1->Set(-0.5);
+					frontDrive2->Set(-0.5);
+					rearDrive1->Set(-0.5);
+					rearDrive2->Set(-0.5);
+				}
+				if (imageCenter < centerPos)
+				{
+					SmartDashboard::PutString("Vision Says", "Turn!!!");
+					frontDrive1->Set(0.5);
+					frontDrive2->Set(0.5);
+					rearDrive1->Set(0.5);
+					rearDrive2->Set(0.5);
+				}
+				if (imageCenter > centerPos + .25 && imageCenter < centerPos - .25)
+				{
+					if (imageCenter > centerPos2)
 					{
 						SmartDashboard::PutString("Vision Says", "Turn!!!");
 						frontDrive1->Set(-0.5);
@@ -373,38 +382,46 @@ class Robot: public IterativeRobot
 						rearDrive1->Set(-0.5);
 						rearDrive2->Set(-0.5);
 					}
-					if (imageCenter > centerPos + 1
-							&& imageCenter < centerPos - 1)
+					if (imageCenter < centerPos2)
+					{
+						SmartDashboard::PutString("Vision Says", "Turn!!!");
+						frontDrive1->Set(0.5);
+						frontDrive2->Set(0.5);
+						rearDrive1->Set(0.5);
+						rearDrive2->Set(0.5);
+					}
+					if (imageCenter > centerPos2 + 1
+							&& imageCenter < centerPos2 - 1)
 					{
 						SmartDashboard::PutString("Vision Says", "Good!!!");
 						shooter->Set(fabs(sqrt(trajectoryCal)));
 					}
 				}
-			}
 
-			if (driveStick->GetRawButton(7))
-			{
-				if (climberButton->Get())
+				if (driveStick->GetRawButton(7))
 				{
-					climber->Set(127);
+					if (climberButton->Get())
+					{
+						climber->Set(127);
+					}
+					else
+					{
+						climber->Set(0);
+					}
 				}
-				else
-				{
-					climber->Set(0);
-				}
-			}
-			/*******************************************************************\
+				/*******************************************************************\
 			 | pressed: true                                                     |
-			 | counter: limit switch pressed                                     |
-			 | goodCount: the ideal revolutions the motor turns before resetting |
-			 | shooter: ball shooting motor                                      |
-			 \*******************************************************************/
-			/*
-			 void TestInit() {
-			 }
-			 void TestPeriodic() {
-			 }
-			 */
+				 | counter: limit switch pressed                                     |
+				 | goodCount: the ideal revolutions the motor turns before resetting |
+				 | shooter: ball shooting motor                                      |
+				 \*******************************************************************/
+				/*
+				 void TestInit() {
+				 }
+				 void TestPeriodic() {
+				 }
+				 */
+			}
 		}
 };
 
