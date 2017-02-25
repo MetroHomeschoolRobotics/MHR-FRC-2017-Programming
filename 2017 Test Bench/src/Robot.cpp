@@ -123,7 +123,7 @@ class Robot: public IterativeRobot
 		double targetCenter = 150; // change me for the target center *note camera is offset
 		double minTargetmargin = 6;
 		double maxTargetmargin = -6;
-		int camWidth = 100;
+		int camWidth = 320;
 		int camHeight = 240;
 		int imageCenter = (camWidth);
 
@@ -147,9 +147,11 @@ class Robot: public IterativeRobot
 			cam1.SetResolution(camWidth, camHeight);
 			cam1.SetFPS(24);
 
-			LOuter = roboRealm->GetNumber("X1", 1);
+			roboRealm = NetworkTable::GetTable("SmartDashboard");
+
+			LOuter = roboRealm->GetNumber("X1", 0);
 //			LInner = roboRealm->GetNumber("LeftInner", 1);
-			ROuter = roboRealm->GetNumber("X3", 1);
+			ROuter = roboRealm->GetNumber("X3", 0);
 //			RInner = roboRealm->GetNumber("RightInner", 1);
 
 			/*frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
