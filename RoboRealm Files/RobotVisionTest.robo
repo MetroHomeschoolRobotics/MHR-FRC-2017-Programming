@@ -1,0 +1,269 @@
+<head><version>2.83.3</version></head>
+<zoom>8</zoom>
+<Read_HTTP>
+  <erase_on_error>TRUE</erase_on_error>
+  <is_active>TRUE</is_active>
+  <timeout>1000</timeout>
+  <url>http://10.18.25.92:1181/stream.mjpg</url>
+</Read_HTTP>
+<FRC_CameraClient disabled>
+  <address>10.18.25.92</address>
+  <compression>5</compression>
+  <enable_logging>1</enable_logging>
+  <fps>24</fps>
+  <port>1181</port>
+  <resolution>1</resolution>
+  <running>0</running>
+</FRC_CameraClient>
+<Adaptive_Threshold>
+  <channel_type>1</channel_type>
+  <filter_size>41</filter_size>
+  <max_threshold>255</max_threshold>
+  <mean_offset>39</mean_offset>
+  <min_threshold>234</min_threshold>
+</Adaptive_Threshold>
+<Line_Pattern>
+  <angle_increment>0.0</angle_increment>
+  <bottom_padding>0</bottom_padding>
+  <color>cyan</color>
+  <confidence>90</confidence>
+  <display_as_annotation>1</display_as_annotation>
+  <has_border>1</has_border>
+  <left_padding>0</left_padding>
+  <line_color>green</line_color>
+  <max_angle>90</max_angle>
+  <max_length/>
+  <merge_count>5</merge_count>
+  <merge_overlap>20</merge_overlap>
+  <min_angle>90</min_angle>
+  <min_length/>
+  <overlay_image>Source</overlay_image>
+  <pattern>10 17 31 32 10</pattern>
+  <remove_background>0</remove_background>
+  <riht_padding>1</riht_padding>
+  <text_size>Huge (24pt)</text_size>
+  <thickness>6</thickness>
+  <top_padding>0</top_padding>
+</Line_Pattern>
+<Display_Arrow>
+  <clear_image>0</clear_image>
+  <color>yellow</color>
+  <display_as_annotation>1</display_as_annotation>
+  <display_mode_index>0</display_mode_index>
+  <head_thickness>7</head_thickness>
+  <line_thickness>3</line_thickness>
+  <xy_list/>
+  <x_end>[LINE_PATTERN:1]</x_end>
+  <x_end_map/>
+  <x_start>[image_width/2]</x_start>
+  <x_start_map/>
+  <y_end>[LINE_PATTERN:2]</y_end>
+  <y_end_map/>
+  <y_start>[image_height/2]</y_start>
+  <y_start_map/>
+</Display_Arrow>
+<Set_Variable disabled>
+  <set_1_array>0</set_1_array>
+  <set_1_once>0</set_1_once>
+  <set_2_array>0</set_2_array>
+  <set_2_once>0</set_2_once>
+  <set_3_array>0</set_3_array>
+  <set_3_once>0</set_3_once>
+  <set_4_array>0</set_4_array>
+  <set_4_once>0</set_4_once>
+  <set_5_array>0</set_5_array>
+  <set_5_once>0</set_5_once>
+  <set_6_array>0</set_6_array>
+  <set_6_once>0</set_6_once>
+  <set_7_array>0</set_7_array>
+  <set_7_once>0</set_7_once>
+  <set_8_array>0</set_8_array>
+  <set_8_once>0</set_8_once>
+  <set_9_array>0</set_9_array>
+  <set_9_once>0</set_9_once>
+  <set_10_array>0</set_10_array>
+  <set_10_once>0</set_10_once>
+  <set_11_array>0</set_11_array>
+  <set_11_once>0</set_11_once>
+  <set_12_array>0</set_12_array>
+  <set_12_once>0</set_12_once>
+  <set_13_array>0</set_13_array>
+  <set_13_once>0</set_13_once>
+  <set_14_array>0</set_14_array>
+  <set_14_once>0</set_14_once>
+  <set_15_array>0</set_15_array>
+  <set_15_once>0</set_15_once>
+  <set_16_array>0</set_16_array>
+  <set_16_once>0</set_16_once>
+  <value_1>(LINE_PATTERN:1) - 28</value_1>
+  <value_2>(LINE_PATTERN:1) + 7</value_2>
+  <value_3>(LINE_PATTERN:1) + 7</value_3>
+  <value_4>(LINE_PATTERN:1) - 28</value_4>
+  <value_5>(LINE_PATTERN:2) - 30</value_5>
+  <value_6>(LINE_PATTERN:2) - 30</value_6>
+  <value_7>(LINE_PATTERN:2) + 10</value_7>
+  <value_8>(LINE_PATTERN:2) + 10</value_8>
+  <value_9/>
+  <value_10/>
+  <value_11/>
+  <value_12/>
+  <value_13/>
+  <value_14/>
+  <value_15/>
+  <value_16/>
+  <variable_1>X1</variable_1>
+  <variable_2>X2</variable_2>
+  <variable_3>X3</variable_3>
+  <variable_4>X4</variable_4>
+  <variable_5>Y1</variable_5>
+  <variable_6>Y2</variable_6>
+  <variable_7>Y3</variable_7>
+  <variable_8>Y4</variable_8>
+  <variable_9/>
+  <variable_10/>
+  <variable_11/>
+  <variable_12/>
+  <variable_13/>
+  <variable_14/>
+  <variable_15/>
+  <variable_16/>
+</Set_Variable>
+<VBScript_Program>
+  <auto_reload>TRUE</auto_reload>
+  <continue_on_errors>FALSE</continue_on_errors>
+  <filename>.\Rectangle Code.vbs</filename>
+  <script>list = GetArrayVariable("LINE_PATTERN")
+
+
+SetVariable "X1", 0
+SetVariable "Y1", 0
+SetVariable "X2", 0
+SetVariable "Y2", 0
+SetVariable "X3", 0
+SetVariable "Y3", 0
+SetVariable "X4", 0
+SetVariable "Y4", 0
+
+if isArray(list) then
+  if ubound(list) &gt; 0 then
+
+		' based on a line pattern in 8 x inches 
+		' of 10 17 31 32 10 = 100
+	
+    targetPixelHeight = (list(3)/10)
+    targetSamples = 0
+
+    ' calibrated for an Axis camera
+    imageHeight = GetVariable("IMAGE_HEIGHT")
+    cameraFieldOfView = 47.5
+    targetHeight = 100.0
+
+		' determine distance in 8 x inches
+    totalDistance = (((targetHeight*imageHeight)/targetPixelHeight)/2)/_
+      tan(((cameraFieldOfView*3.14159)/180.0)/2.0)
+
+		' convert to ft (12 inch per ft * 8 inch multiplier) = 96
+		totalDistance = CInt((totalDistance*100)/96)/100
+
+		' save it for use in other modules
+    SetVariable "Distance", totalDistance
+
+		widthDiff = list(6) - list(4)
+		heightDiff = list(7) - list(5)
+		
+		SetVariable "X1", list(1) - widthDiff
+		SetVariable "Y1", list(2) + heightDiff
+		
+		SetVariable "X2", list(1) + widthDiff
+		SetVariable "Y2", list(2) + heightDiff
+		
+		SetVariable "X3", list(1) + widthDiff
+		SetVariable "Y3", list(2) - heightDiff
+		
+		SetVariable "X4", list(1) - widthDiff
+		SetVariable "Y4", list(2) - heightDiff
+		
+		SetVariable "RightOuter", "X1"
+		SetVariable "LeftOuter", "X3"
+		SetVariable "RightInner", "X2"
+		SetVariable "LeftInner", "X4"
+		
+  end if
+end if		
+</script>
+  <source_mode>gui</source_mode>
+  <tab_size_index>1</tab_size_index>
+</VBScript_Program>
+<Display_Rectangle>
+  <clear_image>0</clear_image>
+  <color_index>red</color_index>
+  <display_as_annotation>1</display_as_annotation>
+  <display_mode_index>1</display_mode_index>
+  <fill_shape>0</fill_shape>
+  <thickness>1</thickness>
+  <xy_list_map/>
+  <x_1>100</x_1>
+  <x_1_map>X1</x_1_map>
+  <x_2>200</x_2>
+  <x_2_map>X2</x_2_map>
+  <x_3>200</x_3>
+  <x_3_map>X3</x_3_map>
+  <x_4>100</x_4>
+  <x_4_map>X4</x_4_map>
+  <y_1>100</y_1>
+  <y_1_map>Y1</y_1_map>
+  <y_2>100</y_2>
+  <y_2_map>Y2</y_2_map>
+  <y_3>200</y_3>
+  <y_3_map>Y3</y_3_map>
+  <y_4>200</y_4>
+  <y_4_map>Y4</y_4_map>
+</Display_Rectangle>
+<Watch_Variables>
+  <on_top>FALSE</on_top>
+</Watch_Variables>
+<Display_Variables>
+  <border_color>red</border_color>
+  <dim_background>TRUE</dim_background>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>TRUE</display_value_only>
+  <font_color>white</font_color>
+  <font_size>Normal (10pt)</font_size>
+  <northwest>Distance
+X4
+X3
+X2
+X1
+</northwest>
+</Display_Variables>
+<NetworkTables>
+  <delay>100</delay>
+  <filter_type_index>0</filter_type_index>
+  <hostname>10.18.25.2</hostname>
+  <port>1735</port>
+  <prefix>/SmartDashboard/</prefix>
+  <variables_to_send>Distance
+LeftInner
+LeftOuter
+RightInner
+RightOuter
+X1
+X2
+X3
+X4
+Y1
+Y2
+Y3
+Y4</variables_to_send>
+  <variable_type_index>0</variable_type_index>
+</NetworkTables>
+<function>
+<function_name>Sample</function_name>
+<function_always_run>0</function_always_run>
+<Read_HTTP>
+  <erase_on_error>TRUE</erase_on_error>
+  <is_active>TRUE</is_active>
+  <timeout>1000</timeout>
+  <url>http://10.18.25.92:1181/stream.mjpg</url>
+</Read_HTTP>
+</function>

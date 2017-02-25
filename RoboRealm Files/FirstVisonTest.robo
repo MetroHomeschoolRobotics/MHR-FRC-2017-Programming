@@ -1,0 +1,9 @@
+<head><version>2.79.26</version></head>
+<Adaptive_Threshold>
+  <channel_type>1</channel_type>
+  <filter_size>27</filter_size>
+  <max_threshold>205</max_threshold>
+  <mean_offset>5</mean_offset>
+  <min_threshold>195</min_threshold>
+  <result_type>1</result_type>
+</Adaptive_Threshold>
