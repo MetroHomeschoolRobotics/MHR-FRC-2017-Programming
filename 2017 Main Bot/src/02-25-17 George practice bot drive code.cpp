@@ -197,11 +197,11 @@ private:
 					// start agitator code
 					if (driveStick->GetRawButton(2)) // pwm 1
 					{
-						agitator->Set(-0.5); // test at 1 or 100 percent
+						agitator->Set(-0.25); // test at 1 or 100 percent
 					}
 					else if (driveStick->GetRawButton(3)) // pwm 1
 					{
-						agitator->Set(0.5);
+						agitator->Set(0.25);
 					}
 					else
 					{
