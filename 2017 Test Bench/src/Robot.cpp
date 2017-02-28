@@ -102,9 +102,7 @@ class Robot: public IterativeRobot
 		int limitSwitchState = 0; // the state of the limit switch
 
 		//vision tracking
-		std::shared_ptr<NetworkTable> roboRealm;
 		cs::UsbCamera cam1;
-		cs::CvSink highGoalVid;
 		int action = 1;
 		double IMAGE_WIDTH = 320;
 		double IMAGE_HEIGHT = 240;
@@ -114,46 +112,32 @@ class Robot: public IterativeRobot
 		double LInner = 0;
 		double ROuter = 0;
 		double RInner = 0;
-		double centerPos = (ROuter + LOuter) / 2;
-//		double centerPos2 = (LInner + RInner);
 		double shooterPos = 0;
 		double shootCount = 0;
 		double turnDistance = 0;
 		double shootDistance = 0;
-		double targetCenter = 150; // change me for the target center *note camera is offset
+		double targetCenter = 75; // change me for the target center *note camera is offset
 		double minTargetmargin = 6;
 		double maxTargetmargin = -6;
-		int camWidth = 320;
-		int camHeight = 240;
-		int imageCenter = (camWidth);
-
 		//disabled periodic
 		int type = 0;
 		int typeMod = 0;
 
 		void RobotInit() override
 		{
-			printf("Hello World!");
-//			NetworkTable::SetClientMode();
-			NetworkTable::SetIPAddress("10.18.25.2");
-//			NetworkTable::Initialize();
-			std::shared_ptr<NetworkTable> myTable = NetworkTable::GetTable(
-					"SmartDashboard");
 			CameraServer::GetInstance()->StartAutomaticCapture();
-			roboRealm = NetworkTable::GetTable("cam1");
+			//roboRealm = NetworkTable::GetTable("cam1");
 
 			cam1 = CameraServer::GetInstance()->StartAutomaticCapture("cam1",
 					0);
-			cam1.SetResolution(camWidth, camHeight);
+			cam1.SetResolution(IMAGE_WIDTH, IMAGE_HEIGHT);
 			cam1.SetFPS(24);
 
-			roboRealm = NetworkTable::GetTable("SmartDashboard");
-
-			LOuter = roboRealm->GetNumber("X1", 0);
-//			LInner = roboRealm->GetNumber("LeftInner", 1);
-			ROuter = roboRealm->GetNumber("X3", 0);
-//			RInner = roboRealm->GetNumber("RightInner", 1);
-
+			/*			COGX = roboRealm->GetNumber("COG_X", -1.0);
+			 COGY = roboRealm->GetNumber("COG_Y", -1.0);
+			 centerPos = camWidth / 2 - COGX;
+			 turnDistance = centerPos / 10;
+			 */
 			/*frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 			 imaqColorThreshold(frame2, frame, 0, 0, Range(0), Range(255), Range(0);*/
 
@@ -250,26 +234,17 @@ class Robot: public IterativeRobot
 		}
 
 		void TeleopInit() // holds code for pre teleop enable
-		{/*
-		 centerPos = IMAGE_WIDTH / 2 - COGX;
-		 turnDistance = centerPos / 10;
-		 } // code for auto goes here !!!It will run when auto is enabled on the ds!!!
-		 */
+		{
 
 		}
 
 		void TeleopPeriodic() // code for the robot to move is placed here (runs when
 		// the robot is enabled in teleop mode)
 		{
-			//CameraServer::GetInstance()->StartAutomaticCapture("cam0");
-//		SmartDashboard::PutNumber("DB/Slider 0", accel->GetX());
-//		SmartDashboard::PutNumber("DB/Slider 1", accel->GetY());
-//		SmartDashboard::PutNumber("DB/Slider 2", accel->GetZ());
-//		SmartDashboard::PutNumber("DB/Slider 3", gyro->GetAngle());
-			//frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
-
-			//distance = (sonicIn->GetRaw() * inches);
-			//sonicOut->Pulse(10);
+			LOuter = SmartDashboard::GetNumber("LeftOuter", 1);
+			LInner = SmartDashboard::GetNumber("LeftInner", 1);
+			ROuter = SmartDashboard::GetNumber("RightOuter", 1);
+			RInner = SmartDashboard::GetNumber("RightInner", 1);
 
 			//code for controller values
 
@@ -355,7 +330,15 @@ class Robot: public IterativeRobot
 
 			if (driveStick->GetRawButton(6))
 			{
-				if (imageCenter > centerPos)
+				if (targetCenter > ROuter)
+				{
+					SmartDashboard::PutString("Vision Says", "Turn Right!!!");
+					frontDrive1->Set(-0.5);
+					frontDrive2->Set(-0.5);
+					rearDrive1->Set(-0.5);
+					rearDrive2->Set(-0.5);
+				}
+				else if (targetCenter < LOuter)
 				{
 					SmartDashboard::PutString("Vision Says", "Turn Left!!!");
 					frontDrive1->Set(-0.5);
@@ -363,37 +346,31 @@ class Robot: public IterativeRobot
 					rearDrive1->Set(-0.5);
 					rearDrive2->Set(-0.5);
 				}
-				if (imageCenter < centerPos)
+				else if (targetCenter < ROuter && targetCenter > RInner)
 				{
-					SmartDashboard::PutString("Vision Says", "Turn Right!!!");
-					frontDrive1->Set(0.5);
-					frontDrive2->Set(0.5);
-					rearDrive1->Set(0.5);
-					rearDrive2->Set(0.5);
+					SmartDashboard::PutString("Vision Says", "Turn Right");
+					frontDrive1->Set(-0.25);
+					frontDrive2->Set(-0.25);
+					rearDrive1->Set(-0.25);
+					rearDrive2->Set(-0.25);
 				}
-				if (imageCenter > centerPos - 5 && imageCenter < centerPos + 5)
-				{/*
-				 if (imageCenter > centerPos2)
-				 {
-				 SmartDashboard::PutString("Vision Says", "Turn!!!");
-				 frontDrive1->Set(-0.25);
-				 frontDrive2->Set(-0.25);
-				 rearDrive1->Set(-0.25);
-				 rearDrive2->Set(-0.25);
-				 }
-				 if (imageCenter < centerPos2)
-				 {
-				 SmartDashboard::PutString("Vision Says", "Turn!!!");
-				 frontDrive1->Set(0.25);
-				 frontDrive2->Set(0.25);
-				 rearDrive1->Set(0.25);
-				 rearDrive2->Set(0.25);
-				 }
-				 if (imageCenter > centerPos && imageCenter < centerPos2)
-				 {*/
+				else if (targetCenter < LOuter && targetCenter > LInner)
+				{
+					SmartDashboard::PutString("Vision Says", "Turn Left");
+					frontDrive1->Set(0.25);
+					frontDrive2->Set(0.25);
+					rearDrive1->Set(0.25);
+					rearDrive2->Set(0.25);
+				}
+				else if (targetCenter < RInner && targetCenter > LInner)
+				{
 					SmartDashboard::PutString("Vision Says", "Good!!!");
+					frontDrive1->Set(0);
+					frontDrive2->Set(0);
+					rearDrive1->Set(0);
+					rearDrive2->Set(0);
+
 					shooter->Set(fabs(sqrt(trajectoryCal)));
-					//	}
 				}
 			}
 			else
