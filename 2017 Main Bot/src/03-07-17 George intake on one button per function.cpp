@@ -1,8 +1,6 @@
 #include "WPILib.h"
 #include "CANTalon.h"
 #include "Spark.h"
-//#include "networkTables/NetworkTable.h"
-
 
 class Robot : public IterativeRobot
 {
@@ -191,7 +189,7 @@ private:
 					}
 					// climb code end
 
-					// combined new intake code rightx is channel 4 and right y is channel 5
+					// intake code start
 
 					if (driveStick->GetRawButton(3)) // score low boiler
 					{
@@ -210,14 +208,15 @@ private:
 					}
 					else if (driveStick->GetRawButton(1)) // its smuckers button
 					{
-						intake->Set(-1);
-						lowerIntakeRoller->Set(-1);
+						intake->Set(-1);						
+lowerIntakeRoller->Set(-1);
 					}
 					else
 					{
 						intake->Set(0);
 						lowerIntakeRoller->Set(0);
 					}
+					// end intake code
 	}
 
 	void TestInit()
